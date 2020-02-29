@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.graalvm.compiler.hotspot.stubs.OutOfBoundsExceptionStub;
+
 /**
  * @author downey
  * @param <T>
@@ -45,7 +47,14 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public boolean add(T element) {
 		// TODO: FILL THIS IN!
-		return false;
+		if(size >= array.length) {
+			@SuppressWarnings("unchecked")
+			T[] bigger = (T[]) new Object[array.length * 2];
+			System.arraycopy(array, 0, bigger, 0, array.length);
+			array = bigger;
+		}
+		array[size++] = element;
+		return true;
 	}
 
 	@Override
@@ -110,7 +119,11 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public int indexOf(Object target) {
-		// TODO: FILL THIS IN!
+		//내 코드와 정답이 같음
+		for(int i = 0; i < size; i++) {
+			if(equals(target, array[i]))
+				return i;
+		}
 		return -1;
 	}
 
@@ -181,8 +194,22 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public T remove(int index) {
-		// TODO: FILL THIS IN!
-		return null;
+//		내 코드
+//		T tmp = array[index];
+//		// shift the elements
+//		for (int i = index + 1; i<size; i++) {
+//			array[i-1] = array[i];
+//		}
+//		size--;
+//		return tmp;
+		
+//		정답
+		T element = get(index);
+		for(int i = index; i < size-1; i++) {
+			array[i] = array[i+1];
+		}
+		size--;
+		return element;
 	}
 
 	@Override
@@ -201,8 +228,18 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: FILL THIS IN!
-		return null;
+//		내 코드		
+//		if(index >= 0 && index < size) {
+//			T tmp = array[index];
+//			array[index] = element;
+//			return tmp;
+//		}
+//		throw new IndexOutOfBoundsException();
+		
+//		정답
+		T old = get(index); //get메서드가 범위 체크해준다.
+		array[index] = element;
+		return old;
 	}
 
 	@Override
