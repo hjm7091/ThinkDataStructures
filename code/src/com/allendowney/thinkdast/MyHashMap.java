@@ -3,6 +3,7 @@
  */
 package com.allendowney.thinkdast;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,8 +25,8 @@ public class MyHashMap<K, V> extends MyBetterMap<K, V> implements Map<K, V> {
 	public V put(K key, V value) {
 		V oldValue = super.put(key, value);
 
-		//System.out.println("Put " + key + " in " + map + " size now " + map.size());
-
+//		System.out.println("Put " + key + " in " + maps + " size now " + maps.size());
+		
 		// check if the number of elements per map exceeds the threshold
 		if (size() > maps.size() * FACTOR) {
 			rehash();
@@ -41,6 +42,29 @@ public class MyHashMap<K, V> extends MyBetterMap<K, V> implements Map<K, V> {
 	 */
 	protected void rehash() {
 		// TODO: FILL THIS IN!
+		
+		//정답
+		List<MyLinearMap<K, V>> oldMaps = maps;
+		int newK = maps.size() * 2;
+		makeMaps(newK);
+		for(MyLinearMap<K, V> map : oldMaps) {
+			for(Map.Entry<K, V> entry : map.getEntries()) {
+				put(entry.getKey(), entry.getValue());
+			}
+		}
+		
+		//내 코드
+//		List<Entry<K, V>> temp = new ArrayList<>();
+//		for(MyLinearMap<K, V> map : maps) {
+//			for(Entry<K, V> entry : map.getEntries()) {
+//				temp.add(entry);
+//			}
+//		}
+//		int k = maps.size() * 2;
+//		makeMaps(k);
+//		for(Entry<K, V> entry : temp) {
+//			super.put(entry.getKey(), entry.getValue());
+//		}
 	}
 
 	/**

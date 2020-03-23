@@ -20,6 +20,12 @@ public class MyBetterMap<K, V> implements Map<K, V> {
 
 	// MyBetterMap uses a collection of MyLinearMap
 	protected List<MyLinearMap<K, V>> maps;
+	
+	
+
+	public List<MyLinearMap<K, V>> getMaps() {
+		return maps;
+	}
 
 	/**
 	 * Initialize the map with 2 sub-maps.
@@ -64,6 +70,9 @@ public class MyBetterMap<K, V> implements Map<K, V> {
 	public boolean containsKey(Object target) {
 		// to find a key, we only have to search one map
 		// TODO: FILL THIS IN!
+		MyLinearMap<K, V> linearMap = chooseMap(target);
+		if(linearMap.containsKey(target))
+			return true;
 		return false;
 	}
 
@@ -71,6 +80,11 @@ public class MyBetterMap<K, V> implements Map<K, V> {
 	public boolean containsValue(Object target) {
 		// to find a value, we have to search all map
 		// TODO: FILL THIS IN!
+		for(int i = 0; i < maps.size(); i++) {
+			MyLinearMap<K, V> linearMap = maps.get(i);
+			if(linearMap.containsValue(target))
+				return true;
+		}
 		return false;
 	}
 
